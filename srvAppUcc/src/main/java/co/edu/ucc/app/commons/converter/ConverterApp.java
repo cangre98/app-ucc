@@ -1,8 +1,10 @@
 package co.edu.ucc.app.commons.converter;
 
 
+import co.edu.ucc.app.modeloCanonico.dto.EgresoDTO;
 import co.edu.ucc.app.modeloCanonico.dto.PersonaDTO;
 import co.edu.ucc.app.modeloCanonico.dto.UsuarioDTO;
+import co.edu.ucc.app.modeloCanonico.entities.EgresoDAO;
 import co.edu.ucc.app.modeloCanonico.entities.PersonaDAO;
 import co.edu.ucc.app.modeloCanonico.entities.UsuarioDAO;
 import org.modelmapper.ModelMapper;
@@ -36,6 +38,18 @@ public class ConverterApp {
         PersonaDAO personaDAO = new PersonaDAO();
         modelMapper.map(personaDTO, personaDAO);
         return personaDAO;
+    }
+
+    public EgresoDTO egresoDAOtoDTO(EgresoDAO egresoDAO, ModelMapper modelMapper){
+        EgresoDTO egresoDTO = new EgresoDTO();
+        modelMapper.map(egresoDAO, egresoDTO);
+        return egresoDTO;
+    }
+
+    public EgresoDAO egresoDTOtoDAO(EgresoDTO egresoDTO, ModelMapper modelMapper){
+        EgresoDAO egresoDAO = new EgresoDAO();
+        modelMapper.map(egresoDTO, egresoDAO);
+        return egresoDAO;
     }
 
 }
