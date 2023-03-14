@@ -41,6 +41,7 @@ public class InversionDAO {
     @Column(name = "fechagasto", nullable = false)
     private LocalDate fechaGasto;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idahorro")
     private AhorroDAO idAhorro;

@@ -72,4 +72,40 @@ public class ConverterApp {
         return gastoDAO;
     }
 
+    public AhorroDTO ahorroDAOtoDTO(AhorroDAO ahorroDAO, ModelMapper modelMapper){
+        AhorroDTO ahorroDTO = new AhorroDTO();
+        modelMapper.map(ahorroDAO, ahorroDTO);
+        return ahorroDTO;
+    }
+
+    public AhorroDAO ahorroDTOtoDAO(AhorroDTO ahorroDTO, ModelMapper modelMapper){
+        AhorroDAO ahorroDAO = new AhorroDAO();
+        modelMapper.map(ahorroDTO, ahorroDAO);
+        return ahorroDAO;
+    }
+
+    public InversionDTO inversionDAOtoDTO(InversionDAO inversionDAO, ModelMapper modelMapper){
+        InversionDTO inversionDTO = new InversionDTO();
+        modelMapper.map(inversionDAO, inversionDTO);
+        return inversionDTO;
+    }
+
+    public InversionDAO inversionDTOtoDAO(InversionDTO inversionDTO, ModelMapper modelMapper){
+        InversionDAO inversionDAO = new InversionDAO();
+        modelMapper.map(inversionDTO, inversionDAO);
+        return inversionDAO;
+    }
+
+    public IngresoDTO ingresoDAOtoDTO(IngresoDAO ingresoDAO, ModelMapper modelMapper){
+        IngresoDTO ingresoDTO = new IngresoDTO();
+        modelMapper.map(ingresoDAO, ingresoDTO);
+        return ingresoDTO;
+    }
+
+    public IngresoDAO ingresoDTOtoDAO(IngresoDTO ingresoDTO, ModelMapper modelMapper){
+        IngresoDAO ingresoDAO = new IngresoDAO();
+        modelMapper.map(ingresoDTO, ingresoDAO);
+        return ingresoDAO;
+    }
+
 }
