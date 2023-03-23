@@ -40,10 +40,6 @@ public class IngresoDAO {
     @JoinColumn(name = "idcuenta", nullable = false)
     private CuentaDAO idCuenta;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idinversion")
-    private InversionDAO idInversion;
 
 
 }

@@ -37,29 +37,44 @@ public class CuentaService implements ICuentaService {
     @Override
     public GenericResponseDTO crear(CuentaDTO cuentaDTO) throws Exception {
 
-        CuentaDTO cuentaDTOsalida = null;
+        try {
+            CuentaDTO cuentaDTOsalida = null;
 
-        CuentaDAO cuentaDAO = converterApp.cuentaDTOtoDAO(cuentaDTO, modelMapper);
+            CuentaDAO cuentaDAO = converterApp.cuentaDTOtoDAO(cuentaDTO, modelMapper);
+            BigDecimal idCuenta = iCuentaRepository.consultarCuentaPorIdPersona(cuentaDAO.getIdPersona().getId());
 
+            if (idCuenta == null) {
+                iCuentaRepository.save(cuentaDAO);
+                cuentaDTOsalida = converterApp.cuentaDAOtoDTO(cuentaDAO, modelMapper);
 
+                return GenericResponseDTO.builder().message("Cuenta registrada con exito").objectResponse(cuentaDTOsalida).statusCode(HttpStatus.OK.value()).build();
+            }
 
-        BigDecimal buscarPorIdPersona = iCuentaRepository.consultarCuentaPorIdPersona(cuentaDAO.getIdPersona().getId());
+            iCuentaRepository.actualizarCuenta(cuentaDAO.getDescripcion(), cuentaDAO.getSaldo(),
+                    cuentaDAO.getDetalle(), idCuenta);
 
-        if (buscarPorIdPersona == null) {
-
-            iCuentaRepository.save(cuentaDAO);
-
-             cuentaDTOsalida = converterApp.cuentaDAOtoDTO(cuentaDAO, modelMapper);
+            cuentaDTOsalida = converterApp.cuentaDAOtoDTO(cuentaDAO, modelMapper);
 
             return GenericResponseDTO.builder().message("Cuenta registrada con exito").objectResponse(cuentaDTOsalida).statusCode(HttpStatus.OK.value()).build();
+
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return GenericResponseDTO.builder().message("Error registrando el Cuenta").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
         }
 
-        iCuentaRepository.actualizarCuenta(cuentaDAO.getDescripcion(), cuentaDAO.getSaldo(),
-                cuentaDAO.getDetalle(), buscarPorIdPersona);
+    }
 
-        cuentaDTOsalida = converterApp.cuentaDAOtoDTO(cuentaDAO, modelMapper);
+    public void actualizarSaldo(CuentaDAO cuentaDAO) {
+        try {
 
-        return GenericResponseDTO.builder().message("Cuenta registrada con exito").objectResponse(cuentaDTOsalida).statusCode(HttpStatus.OK.value()).build();
+            CuentaDAO cuentaDAOConsulta = iCuentaRepository.getById(cuentaDAO.getId());
+
+            iCuentaRepository.actualizarSaldo((cuentaDAOConsulta.getSaldo().add(cuentaDAO.getSaldo())), cuentaDAO.getId());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
     }
 
     @Override
@@ -69,14 +84,14 @@ public class CuentaService implements ICuentaService {
             Optional<CuentaDAO> buscar = iCuentaRepository.findById(id);
 
             if (buscar.isEmpty()) {
-                    return GenericResponseDTO.builder().message("El id N°"+ id +" de la que ha ingresado  no existe").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
-            } else{
-                return GenericResponseDTO.builder().message("Consulta cuenta por id: "+ id +" realizada con exito").objectResponse(buscar).statusCode(HttpStatus.OK.value()).build();
+                return GenericResponseDTO.builder().message("El id N°" + id + " de la que ha ingresado  no existe").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
+            } else {
+                return GenericResponseDTO.builder().message("Consulta cuenta por id: " + id + " realizada con exito").objectResponse(buscar).statusCode(HttpStatus.OK.value()).build();
             }
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             logger.error(e.getMessage());
-            return GenericResponseDTO.builder().message("Error consultando el egreso").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
+            return GenericResponseDTO.builder().message("Error consultando el Cuenta").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
         }
     }
 
@@ -87,13 +102,13 @@ public class CuentaService implements ICuentaService {
             Optional<CuentaDAO> buscar = iCuentaRepository.findById(id);
 
             if (buscar.isEmpty()) {
-                return GenericResponseDTO.builder().message("El id N°"+ id +" del egreso que ha ingresado no existe").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
-            } else{
+                return GenericResponseDTO.builder().message("El id N°" + id + " del egreso que ha ingresado no existe").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
+            } else {
                 iCuentaRepository.deleteById(id);
                 return GenericResponseDTO.builder().message("Eliminaado exitoso").objectResponse(id).statusCode(HttpStatus.OK.value()).build();
             }
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             logger.error(e.getMessage());
             return GenericResponseDTO.builder().message("Error al consultar cuenta").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
         }

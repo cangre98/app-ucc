@@ -2,12 +2,10 @@ package co.edu.ucc.app.service.impl;
 
 import co.edu.ucc.app.commons.converter.ConverterApp;
 import co.edu.ucc.app.modeloCanonico.dto.IngresoDTO;
-import co.edu.ucc.app.modeloCanonico.dto.InversionDTO;
 import co.edu.ucc.app.modeloCanonico.dto.generic.GenericResponseDTO;
+import co.edu.ucc.app.modeloCanonico.entities.CuentaDAO;
 import co.edu.ucc.app.modeloCanonico.entities.IngresoDAO;
-import co.edu.ucc.app.modeloCanonico.entities.InversionDAO;
 import co.edu.ucc.app.repository.IIngresoRepository;
-import co.edu.ucc.app.repository.IInversionRepository;
 import co.edu.ucc.app.service.IIngresoService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -26,13 +24,16 @@ public class IngresoService implements IIngresoService {
 
     private final IIngresoRepository ingresoRepository;
 
+    private final CuentaService cuentaService;
+
     private final ModelMapper modelMapper;
 
     private final ConverterApp converterApp;
 
     @Autowired
-    public IngresoService(IIngresoRepository ingresoRepository, ModelMapper modelMapper, ConverterApp converterApp) {
+    public IngresoService(IIngresoRepository ingresoRepository, CuentaService cuentaService, ModelMapper modelMapper, ConverterApp converterApp) {
         this.ingresoRepository = ingresoRepository;
+        this.cuentaService = cuentaService;
         this.modelMapper = modelMapper;
         this.converterApp = converterApp;
     }
@@ -46,6 +47,10 @@ public class IngresoService implements IIngresoService {
 
             IngresoDAO ingresoDAO = converterApp.ingresoDTOtoDAO(ingresoDTO, modelMapper);
 
+            cuentaService.actualizarSaldo(CuentaDAO.builder()
+                    .id(ingresoDTO.getIdCuenta().getId())
+                            .saldo(ingresoDTO.getValor())
+                    .build());
 
             ingresoRepository.save(ingresoDAO);
 

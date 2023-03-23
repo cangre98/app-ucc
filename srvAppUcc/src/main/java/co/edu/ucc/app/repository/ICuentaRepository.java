@@ -13,8 +13,8 @@ import java.math.BigDecimal;
 public interface ICuentaRepository extends JpaRepository<CuentaDAO, BigDecimal> {
 
     @Query(value = "select c.idcuenta from cuenta c where c.idpersona=:idPersona"
-    , nativeQuery = true)
-    BigDecimal consultarCuentaPorIdPersona (@Param("idPersona") BigDecimal idPersona);
+            , nativeQuery = true)
+    BigDecimal consultarCuentaPorIdPersona(@Param("idPersona") BigDecimal idPersona);
 
     @Transactional
     @Modifying
@@ -23,6 +23,13 @@ public interface ICuentaRepository extends JpaRepository<CuentaDAO, BigDecimal> 
             " WHERE c.id=:id")
     void actualizarCuenta(@Param("descripcion") String descripcion, @Param("saldo") BigDecimal saldo,
                           @Param("detalle") String detalle, @Param("id") BigDecimal idCuenta);
+
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE CuentaDAO c set c.saldo=:saldo" +
+            " WHERE c.id=:id")
+    void actualizarSaldo(@Param("saldo") BigDecimal saldo, @Param("id") BigDecimal idCuenta);
 
 
 }

@@ -32,6 +32,4 @@ public class IngresoDTO implements Serializable {
     @NotNull(message = MensajeValidacion.MSN_VARIABLE_REQUERIDA)
     private  CuentaDTO idCuenta;
 
-    @NotNull(message = MensajeValidacion.MSN_VARIABLE_REQUERIDA)
-    private  InversionDTO idInversion;
 }
