@@ -26,7 +26,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/usuario")
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UsuarioController implements IUsuarioController {
 
     private static final Logger logger = LoggerFactory.getLogger(UsuarioController.class);

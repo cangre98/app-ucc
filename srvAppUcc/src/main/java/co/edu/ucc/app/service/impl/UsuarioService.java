@@ -2,6 +2,7 @@ package co.edu.ucc.app.service.impl;
 
 
 import co.edu.ucc.app.commons.converter.ConverterApp;
+import co.edu.ucc.app.modeloCanonico.dto.PersonaDTO;
 import co.edu.ucc.app.modeloCanonico.dto.generic.GenericResponseDTO;
 import co.edu.ucc.app.modeloCanonico.dto.UsuarioDTO;
 import co.edu.ucc.app.modeloCanonico.entities.UsuarioDAO;
@@ -17,8 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Optional;
+import java.sql.Array;
+import java.util.*;
 
 
 @Service
@@ -28,14 +29,17 @@ public class UsuarioService implements IUsuarioService {
 
     private final IUsuarioRepository iUsuarioRepository;
 
+    private final PersonaService personaService;
+
     private final ModelMapper modelMapper;
     private final ConverterApp converterApp;
 
 
     @Autowired
-    public UsuarioService(IUsuarioRepository iUsuarioRepository, ModelMapper modelMapper, ConverterApp converterApp) {
+    public UsuarioService(IUsuarioRepository iUsuarioRepository, PersonaService personaService, ModelMapper modelMapper, ConverterApp converterApp) {
 
         this.iUsuarioRepository = iUsuarioRepository;
+        this.personaService = personaService;
         this.modelMapper = modelMapper;
         this.converterApp = converterApp;
     }
@@ -43,9 +47,12 @@ public class UsuarioService implements IUsuarioService {
     public GenericResponseDTO crear(UsuarioDTO usuarioDTO) throws Exception {
         try {
 
+            GenericResponseDTO persona = personaService.crear(usuarioDTO.getIdPersona());
+
             usuarioDTO.setClave(DigestUtils.md5Hex(usuarioDTO.getClave()));
             usuarioDTO.setFechaCreacion(new Date());
             usuarioDTO.setFechaCambioClave(new Date());
+            usuarioDTO.setIdPersona((PersonaDTO) persona.getObjectResponse());
 
             UsuarioDAO usuarioDAO = converterApp.usuarioDTOtoDAO(usuarioDTO, modelMapper);
 
@@ -74,7 +81,7 @@ public class UsuarioService implements IUsuarioService {
 
         } catch (Exception e) {
             logger.error(e.getMessage());
-            return GenericResponseDTO.builder().message("Error Login").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
+            return GenericResponseDTO.builder().message("Error Login").objectResponse(null).statusCode(HttpStatus.UNAUTHORIZED.value()).build();
         }
     }
 
@@ -96,5 +103,4 @@ public class UsuarioService implements IUsuarioService {
             return GenericResponseDTO.builder().message("Error al consultar el Usuario por id registrada en el sistema").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
         }
     }
-
 }

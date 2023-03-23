@@ -29,7 +29,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/persona")
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PersonaController implements IPersonaController {
 
     private static final Logger logger = LoggerFactory.getLogger(PersonaController.class);
