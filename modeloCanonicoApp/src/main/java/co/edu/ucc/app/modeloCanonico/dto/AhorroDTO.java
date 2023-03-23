@@ -1,4 +1,4 @@
-package co.edu.ucc.app.modeloCanonico.entities;
+package co.edu.ucc.app.modeloCanonico.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -7,35 +7,24 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
-@Table(name = "ahorro")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class AhorroDAO {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idahorro", nullable = false)
-    private BigDecimal id;
+public class AhorroDTO  {
 
 
-    @Size(max = 200)
+    private  BigDecimal id;
+
     @NotNull
-    @Column(name = "detalle", nullable = false, length = 200)
-    private String detalle;
+    private  String detalle;
 
-    @Column(name = "valorahorro")
-    private BigDecimal valorAhorro;
-
-
-
+    private  BigDecimal valorAhorro;
 }

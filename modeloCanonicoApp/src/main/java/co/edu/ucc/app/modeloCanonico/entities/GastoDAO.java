@@ -42,10 +42,8 @@ public class GastoDAO {
     private LocalDate fechaGasto;
 
     @NotNull
-    @Column(name = "idcuenta", nullable = false)
-    private BigDecimal idCuenta;
-
-
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idcuenta")
+    private CuentaDAO idCuenta;
 
 }

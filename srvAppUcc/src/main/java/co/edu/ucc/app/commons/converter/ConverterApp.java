@@ -1,10 +1,8 @@
 package co.edu.ucc.app.commons.converter;
 
 
-import co.edu.ucc.app.modeloCanonico.dto.PersonaDTO;
-import co.edu.ucc.app.modeloCanonico.dto.UsuarioDTO;
-import co.edu.ucc.app.modeloCanonico.entities.PersonaDAO;
-import co.edu.ucc.app.modeloCanonico.entities.UsuarioDAO;
+import co.edu.ucc.app.modeloCanonico.dto.*;
+import co.edu.ucc.app.modeloCanonico.entities.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -36,6 +34,78 @@ public class ConverterApp {
         PersonaDAO personaDAO = new PersonaDAO();
         modelMapper.map(personaDTO, personaDAO);
         return personaDAO;
+    }
+
+    public CuentaDTO cuentaDAOtoDTO(CuentaDAO cuentaDAO, ModelMapper modelMapper){
+        CuentaDTO cuentaDTO = new CuentaDTO();
+        modelMapper.map(cuentaDAO, cuentaDTO);
+        return cuentaDTO;
+    }
+
+    public CuentaDAO cuentaDTOtoDAO(CuentaDTO cuentaDTO, ModelMapper modelMapper) {
+        CuentaDAO cuentaDAO = new CuentaDAO();
+        modelMapper.map(cuentaDTO, cuentaDAO);
+        return cuentaDAO;
+    }
+
+    public EgresoDTO egresoDAOtoDTO(EgresoDAO egresoDAO, ModelMapper modelMapper){
+        EgresoDTO egresoDTO = new EgresoDTO();
+        modelMapper.map(egresoDAO, egresoDTO);
+        return egresoDTO;
+    }
+
+    public EgresoDAO egresoDTOtoDAO(EgresoDTO egresoDTO, ModelMapper modelMapper){
+        EgresoDAO egresoDAO = new EgresoDAO();
+        modelMapper.map(egresoDTO, egresoDAO);
+        return egresoDAO;
+    }
+
+    public GastoDTO gastoDAOtoDTO(GastoDAO gastoDAO, ModelMapper modelMapper){
+        GastoDTO gastoDTO = new GastoDTO();
+        modelMapper.map(gastoDAO, gastoDTO);
+        return gastoDTO;
+    }
+
+    public GastoDAO gastoDTOtoDAO(GastoDTO gastoDTO, ModelMapper modelMapper){
+        GastoDAO gastoDAO = new GastoDAO();
+        modelMapper.map(gastoDTO, gastoDAO);
+        return gastoDAO;
+    }
+
+    public AhorroDTO ahorroDAOtoDTO(AhorroDAO ahorroDAO, ModelMapper modelMapper){
+        AhorroDTO ahorroDTO = new AhorroDTO();
+        modelMapper.map(ahorroDAO, ahorroDTO);
+        return ahorroDTO;
+    }
+
+    public AhorroDAO ahorroDTOtoDAO(AhorroDTO ahorroDTO, ModelMapper modelMapper){
+        AhorroDAO ahorroDAO = new AhorroDAO();
+        modelMapper.map(ahorroDTO, ahorroDAO);
+        return ahorroDAO;
+    }
+
+    public InversionDTO inversionDAOtoDTO(InversionDAO inversionDAO, ModelMapper modelMapper){
+        InversionDTO inversionDTO = new InversionDTO();
+        modelMapper.map(inversionDAO, inversionDTO);
+        return inversionDTO;
+    }
+
+    public InversionDAO inversionDTOtoDAO(InversionDTO inversionDTO, ModelMapper modelMapper){
+        InversionDAO inversionDAO = new InversionDAO();
+        modelMapper.map(inversionDTO, inversionDAO);
+        return inversionDAO;
+    }
+
+    public IngresoDTO ingresoDAOtoDTO(IngresoDAO ingresoDAO, ModelMapper modelMapper){
+        IngresoDTO ingresoDTO = new IngresoDTO();
+        modelMapper.map(ingresoDAO, ingresoDTO);
+        return ingresoDTO;
+    }
+
+    public IngresoDAO ingresoDTOtoDAO(IngresoDTO ingresoDTO, ModelMapper modelMapper){
+        IngresoDAO ingresoDAO = new IngresoDAO();
+        modelMapper.map(ingresoDTO, ingresoDAO);
+        return ingresoDAO;
     }
 
 }
