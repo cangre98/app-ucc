@@ -26,24 +26,10 @@ public class GastoDAO {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idgasto", nullable = false)
     private BigDecimal id;
-
-    @NotNull
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "idegreso", nullable = false)
-    private EgresoDAO idEgreso;
-
     @Size(max = 40)
     @NotNull
-    @Column(name = "detalleagastar", nullable = false, length = 40)
-    private String detalleAgastar;
+    @Column(name = "descripcion", nullable = false, length = 40)
+    private String descripcion;
 
-    @NotNull
-    @Column(name = "fechagasto", nullable = false)
-    private LocalDate fechaGasto;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idcuenta")
-    private CuentaDAO idCuenta;
 
 }

@@ -1,5 +1,6 @@
 package co.edu.ucc.app.modeloCanonico.dto;
 
+import co.edu.ucc.app.modeloCanonico.entities.InversionDAO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -27,4 +28,8 @@ public class AhorroDTO  {
     private  String detalle;
 
     private  BigDecimal valorAhorro;
+
+    private InversionDAO inversion;
+
+    private CuentaDTO cuenta;
 }

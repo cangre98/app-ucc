@@ -27,29 +27,12 @@ public class InversionDAO {
     @Column(name = "idinversion", nullable = false)
     private BigDecimal id;
 
-    @NotNull
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "idegreso", nullable = false)
-    private EgresoDAO idEgreso;
-
     @Size(max = 40)
     @NotNull
-    @Column(name = "detalleagastar", nullable = false, length = 40)
-    private String detalleAgastar;
+    @Column(name = "nombre", nullable = false, length = 40)
+    private String nombre;
 
-    @NotNull
-    @Column(name = "fechagasto", nullable = false)
-    private LocalDate fechaGasto;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idahorro")
-    private AhorroDAO idAhorro;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "idcuenta", nullable = false)
-    private CuentaDAO idCuenta;
 
 
 }

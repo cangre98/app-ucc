@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -30,6 +31,15 @@ public class EgresoDTO {
 
     @NotNull(message = MensajeValidacion.MSN_VARIABLE_REQUERIDA)
     private  BigDecimal valor;
+
+    @NotNull(message = MensajeValidacion.MSN_VARIABLE_REQUERIDA)
+    private Date fecha;
+
+    private CuentaDTO cuenta;
+
+    private GastoDTO gasto;
+
+
 
 
 }

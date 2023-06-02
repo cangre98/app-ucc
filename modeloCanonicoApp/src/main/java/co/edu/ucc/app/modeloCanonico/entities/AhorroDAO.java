@@ -36,6 +36,16 @@ public class AhorroDAO {
     @Column(name = "valorahorro")
     private BigDecimal valorAhorro;
 
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idinversion")
+    private CuentaDAO idinversion;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idcuenta")
+    private CuentaDAO idCuenta;
+
 
 
 }

@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -65,6 +66,25 @@ public class GastoService implements IGastoService {
                 return GenericResponseDTO.builder().message("El id N°"+ id +" del gasto que ha ingresado  no existe").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
             } else{
                 return GenericResponseDTO.builder().message("Consulta gasto por id: "+ id +" realizada con exito").objectResponse(buscar).statusCode(HttpStatus.OK.value()).build();
+            }
+
+        }catch (Exception e) {
+            logger.error(e.getMessage());
+            return GenericResponseDTO.builder().message("Error consultando el egreso").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
+        }
+    }
+
+
+    @Override
+    public GenericResponseDTO consultarTodos() throws Exception {
+        try {
+
+            List<GastoDAO> buscar = iGastoRepository.findAll();
+
+            if (buscar.isEmpty()) {
+                return GenericResponseDTO.builder().message("No existe gasto").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
+            } else{
+                return GenericResponseDTO.builder().message("Consulta gasto realizada con exito").objectResponse(buscar).statusCode(HttpStatus.OK.value()).build();
             }
 
         }catch (Exception e) {

@@ -11,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -31,8 +32,22 @@ public class EgresoDAO {
     @Column(name = "detalle", nullable = false, length = 50)
     private String detalle;
 
+    @Temporal(TemporalType.DATE)
+    @Column(name = "fecha", nullable = false, length = 7)
+    private Date fecha;
+
     @NotNull
     @Column(name = "valor", nullable = false)
     private BigDecimal valor;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idcuenta")
+    private CuentaDAO idCuenta;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idgasto")
+    private GastoDAO idgasto;
 
 }

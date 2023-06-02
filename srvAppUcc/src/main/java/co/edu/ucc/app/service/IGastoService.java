@@ -11,6 +11,8 @@ public interface IGastoService {
 
     GenericResponseDTO consultarPorId(BigDecimal id) throws Exception;
 
+    GenericResponseDTO consultarTodos() throws Exception;
+
     GenericResponseDTO eliminarPorId(BigDecimal id) throws Exception;
 
 }

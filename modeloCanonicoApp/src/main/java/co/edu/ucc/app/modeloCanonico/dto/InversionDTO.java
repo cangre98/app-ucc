@@ -26,17 +26,6 @@ public class InversionDTO {
     private  BigDecimal id;
 
     @NotNull(message = MensajeValidacion.MSN_VARIABLE_REQUERIDA)
-    private  EgresoDTO idEgreso;
+    private  String nombre;
 
-    @NotNull(message = MensajeValidacion.MSN_VARIABLE_REQUERIDA)
-    private  String detalleAgastar;
-
-    @NotNull(message = MensajeValidacion.MSN_VARIABLE_REQUERIDA)
-    private  LocalDate fechaGasto;
-
-    @NotNull(message = MensajeValidacion.MSN_VARIABLE_REQUERIDA)
-    private  AhorroDTO idAhorro;
-
-    @NotNull(message = MensajeValidacion.MSN_VARIABLE_REQUERIDA)
-    private  CuentaDTO idCuenta;
 }

@@ -19,20 +19,14 @@ import java.time.LocalDate;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class GastoDTO  {
+public class GastoDTO {
 
-    private  BigDecimal id;
-
-    @NotNull(message = MensajeValidacion.MSN_VARIABLE_REQUERIDA)
-    private  EgresoDTO idEgreso;
+    private BigDecimal id;
 
     @Size(max = 40)
     @NotNull(message = MensajeValidacion.MSN_VARIABLE_REQUERIDA)
-    private  String detalleAgastar;
+    private String descripcion;
 
-    @NotNull(message = MensajeValidacion.MSN_VARIABLE_REQUERIDA)
-    private  LocalDate fechaGasto;
-
-    @NotNull(message = MensajeValidacion.MSN_VARIABLE_REQUERIDA)
-    private CuentaDTO idCuenta;
 }
+
+
