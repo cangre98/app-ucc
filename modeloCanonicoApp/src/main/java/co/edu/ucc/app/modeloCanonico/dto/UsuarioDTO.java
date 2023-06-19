@@ -32,6 +32,8 @@ public class UsuarioDTO implements Serializable {
     private Date fechaCreacion;
     private Date fechaCambioClave;
 
+    private BigDecimal cuenta;
+
     private PersonaDTO idPersona;
 
 
