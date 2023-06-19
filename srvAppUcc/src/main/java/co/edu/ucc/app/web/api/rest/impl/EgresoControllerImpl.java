@@ -93,6 +93,88 @@ public class EgresoControllerImpl implements IEgresoController {
     }
 
 
+
+    @Override
+    @GetMapping(path = "/consultaEgresosAll/{idCuenta}/{idGasto}", produces = "application/json")
+    @ApiOperation(value = "Consultar la descripcion proceso por id", notes = "notas")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "La consulta de descripcion proceso fue exitosa", response = GenericResponseDTO.class)
+    })
+    public ResponseEntity<GenericResponseDTO> consultarEgresosPorIdCuentaIdEgreso(@PathVariable(value = "idCuenta", required = true) BigDecimal idCuenta,
+                                                                                  @PathVariable(value = "idGasto", required = true) BigDecimal idGasto,  HttpServletRequest request) throws Exception {
+        try {
+            MensajeGenerico.generarMensajeEntradaLog(logger, request, "consultarId", null);
+            GenericResponseDTO salida = egresoService.consultarEgresosPorIdCuentaIdEgreso(idCuenta,idGasto);
+            MensajeGenerico.generarMensajeSalidaLog(logger, request, "consultarId", mapper.writeValueAsString(salida));
+
+            return new ResponseEntity(
+                    salida, HttpStatus.valueOf(200)
+            );
+
+        } catch (ResponseStatusException | HttpClientErrorException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "No se encuentra informacion");
+        } catch (Exception e) {
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Ocurrio un error inesperado");
+        }
+    }
+
+    @Override
+    @GetMapping(path = "/sumaEgresosIdCuenta/{id}", produces = "application/json")
+    @ApiOperation(value = "Consultar la descripcion proceso por id", notes = "notas")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "La consulta de descripcion proceso fue exitosa", response = GenericResponseDTO.class)
+    })
+    public ResponseEntity<GenericResponseDTO> sumaEgresosIdCuenta(@PathVariable(value = "id", required = true) BigDecimal id,  HttpServletRequest request) throws Exception {
+        try {
+            MensajeGenerico.generarMensajeEntradaLog(logger, request, "consultarId", null);
+            GenericResponseDTO salida = egresoService.sumaEgresosIdCuenta(id);
+            MensajeGenerico.generarMensajeSalidaLog(logger, request, "consultarId", mapper.writeValueAsString(salida));
+
+            return new ResponseEntity(
+                    salida, HttpStatus.valueOf(200)
+            );
+
+        } catch (ResponseStatusException | HttpClientErrorException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "No se encuentra informacion");
+        } catch (Exception e) {
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Ocurrio un error inesperado");
+        }
+    }
+
+
+    @Override
+    @GetMapping(path = "/consultarPorIdCuenta/{id}", produces = "application/json")
+    @ApiOperation(value = "Consultar la descripcion proceso por id", notes = "notas")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "La consulta de descripcion proceso fue exitosa", response = GenericResponseDTO.class)
+    })
+    public ResponseEntity<GenericResponseDTO> consultarPorIdCuenta(@PathVariable(value = "id", required = true) BigDecimal id,  HttpServletRequest request) throws Exception {
+        try {
+            MensajeGenerico.generarMensajeEntradaLog(logger, request, "consultarId", null);
+            GenericResponseDTO salida = egresoService.consultarPorIdCuenta(id);
+            MensajeGenerico.generarMensajeSalidaLog(logger, request, "consultarId", mapper.writeValueAsString(salida));
+
+            return new ResponseEntity(
+                    salida, HttpStatus.valueOf(200)
+            );
+
+        } catch (ResponseStatusException | HttpClientErrorException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "No se encuentra informacion");
+        } catch (Exception e) {
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Ocurrio un error inesperado");
+        }
+    }
+
+
     @Override
     @DeleteMapping(path = "/eliminarPorId/{id}", produces = "application/json")
     @ApiOperation(value = "Consultar la descripcion proceso por id", notes = "notas")

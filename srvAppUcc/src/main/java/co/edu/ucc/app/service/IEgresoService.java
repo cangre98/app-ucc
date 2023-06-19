@@ -11,6 +11,12 @@ public interface IEgresoService {
 
     GenericResponseDTO consultarPorId(BigDecimal id) throws Exception;
 
+    GenericResponseDTO sumaEgresosIdCuenta(BigDecimal id) throws Exception;
+
+    GenericResponseDTO consultarEgresosPorIdCuentaIdEgreso(BigDecimal idCuenta, BigDecimal idEgreso) throws Exception;
+
+    GenericResponseDTO consultarPorIdCuenta(BigDecimal id) throws Exception;
+
     GenericResponseDTO eliminarPorId(BigDecimal id) throws Exception;
 
 

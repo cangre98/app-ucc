@@ -6,6 +6,8 @@ import co.edu.ucc.app.modeloCanonico.entities.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 
 @Component
 public class ConverterApp {
@@ -57,6 +59,24 @@ public class ConverterApp {
     public EgresoDAO egresoDTOtoDAO(EgresoDTO egresoDTO, ModelMapper modelMapper){
         EgresoDAO egresoDAO = new EgresoDAO();
         modelMapper.map(egresoDTO, egresoDAO);
+        return egresoDAO;
+    }
+
+
+    public EgresoDAO egresoDTOtoDAO(EgresoDTO egresoDTO){
+        EgresoDAO egresoDAO = new EgresoDAO();
+
+        CuentaDAO cuentaDAO = new CuentaDAO();
+        cuentaDAO.setId(egresoDTO.getCuenta().getId());
+
+        GastoDAO gastoDAO = new GastoDAO();
+        gastoDAO.setId(egresoDTO.getGasto().getId());
+
+        egresoDAO.setDetalle(egresoDTO.getDetalle());
+        egresoDAO.setValor(egresoDTO.getValor());
+        egresoDAO.setFecha(new Date());
+        egresoDAO.setIdgasto(gastoDAO);
+        egresoDAO.setIdCuenta(cuentaDAO);
         return egresoDAO;
     }
 

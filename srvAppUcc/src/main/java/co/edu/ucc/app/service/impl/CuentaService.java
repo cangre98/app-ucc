@@ -4,18 +4,19 @@ import co.edu.ucc.app.commons.converter.ConverterApp;
 import co.edu.ucc.app.modeloCanonico.dto.CuentaDTO;
 import co.edu.ucc.app.modeloCanonico.dto.generic.GenericResponseDTO;
 import co.edu.ucc.app.modeloCanonico.entities.CuentaDAO;
-import co.edu.ucc.app.modeloCanonico.entities.EgresoDAO;
 import co.edu.ucc.app.repository.ICuentaRepository;
-import co.edu.ucc.app.repository.IPersonaRepository;
 import co.edu.ucc.app.service.ICuentaService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -24,12 +25,17 @@ public class CuentaService implements ICuentaService {
     private static final Logger logger = LoggerFactory.getLogger(CuentaService.class);
 
     private final ICuentaRepository iCuentaRepository;
+
+    private final IngresoService ingresoService;
+    private final EgresoService egresoService;
     private final ModelMapper modelMapper;
     private final ConverterApp converterApp;
 
     @Autowired
-    public CuentaService(ICuentaRepository iCuentaRepository, ModelMapper modelMapper, ConverterApp converterApp) {
+    public CuentaService(ICuentaRepository iCuentaRepository, @Lazy IngresoService ingresoService, @Lazy EgresoService egresoService, ModelMapper modelMapper, ConverterApp converterApp) {
         this.iCuentaRepository = iCuentaRepository;
+        this.ingresoService = ingresoService;
+        this.egresoService = egresoService;
         this.modelMapper = modelMapper;
         this.converterApp = converterApp;
     }
@@ -65,28 +71,51 @@ public class CuentaService implements ICuentaService {
 
     }
 
-    public void actualizarSaldo(CuentaDAO cuentaDAO) {
+    public void actualizarSaldo(CuentaDAO cuentaDAO, boolean ingreso) {
         try {
 
             CuentaDAO cuentaDAOConsulta = iCuentaRepository.getById(cuentaDAO.getId());
 
-            iCuentaRepository.actualizarSaldo((cuentaDAOConsulta.getSaldo().add(cuentaDAO.getSaldo())), cuentaDAO.getId());
+            if (ingreso) {
+                iCuentaRepository.actualizarSaldo((cuentaDAOConsulta.getSaldo().add(cuentaDAO.getSaldo())), cuentaDAO.getId());
+            } else {
+                iCuentaRepository.actualizarSaldo((cuentaDAOConsulta.getSaldo().subtract(cuentaDAO.getSaldo())), cuentaDAO.getId());
+            }
+
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
 
     }
 
+
+    @Override
+    public BigDecimal consultarIdCuentaPorIdPersona(BigDecimal id) throws Exception {
+        try {
+
+            return iCuentaRepository.consultarCuentaPorIdPersona(id);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return BigDecimal.ZERO;
+        }
+    }
+
     @Override
     public GenericResponseDTO consultarPorId(BigDecimal id) throws Exception {
         try {
 
+            Map<String, Object> mapResponse = new HashMap<>();
+
             Optional<CuentaDAO> buscar = iCuentaRepository.findById(id);
+
 
             if (buscar.isEmpty()) {
                 return GenericResponseDTO.builder().message("El id N°" + id + " de la que ha ingresado  no existe").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
             } else {
-                return GenericResponseDTO.builder().message("Consulta cuenta por id: " + id + " realizada con exito").objectResponse(buscar).statusCode(HttpStatus.OK.value()).build();
+                mapResponse.put("cuenta", buscar);
+                mapResponse.put("sumIngresos", ingresoService.sumaIngresosIdCuenta(id));
+                mapResponse.put("sumEgresos", egresoService.sumaEgresosIdCuenta(id));
+                return GenericResponseDTO.builder().message("Consulta cuenta por id: " + id + " realizada con exito").objectResponse(mapResponse).statusCode(HttpStatus.OK.value()).build();
             }
 
         } catch (Exception e) {

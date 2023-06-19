@@ -11,7 +11,8 @@ public interface ICuentaService  {
     GenericResponseDTO crear(CuentaDTO cuentaDTO) throws Exception;
 
     GenericResponseDTO consultarPorId(BigDecimal id) throws Exception;
+    BigDecimal consultarIdCuentaPorIdPersona(BigDecimal id) throws Exception;
 
     GenericResponseDTO eliminarPorId(BigDecimal id) throws Exception;
-    void actualizarSaldo(CuentaDAO cuentaDAO) throws Exception;
+    void actualizarSaldo(CuentaDAO cuentaDAO, boolean ingreso) throws Exception;
 }

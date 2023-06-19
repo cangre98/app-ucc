@@ -39,8 +39,6 @@ public class IngresoService implements IIngresoService {
     }
 
 
-
-
     @Override
     public GenericResponseDTO crear(IngresoDTO ingresoDTO) throws Exception {
         try {
@@ -49,8 +47,8 @@ public class IngresoService implements IIngresoService {
 
             cuentaService.actualizarSaldo(CuentaDAO.builder()
                     .id(ingresoDTO.getIdCuenta().getId())
-                            .saldo(ingresoDTO.getValor())
-                    .build());
+                    .saldo(ingresoDTO.getValor())
+                    .build(), true);
 
             ingresoRepository.save(ingresoDAO);
 
@@ -60,7 +58,7 @@ public class IngresoService implements IIngresoService {
                     .objectResponse(inversionDTOSalida).statusCode(HttpStatus.OK.value()).build();
 
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             logger.error(e.getMessage());
             return GenericResponseDTO.builder().message("Error al registrar la inversion").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
         }
@@ -73,12 +71,27 @@ public class IngresoService implements IIngresoService {
             Optional<IngresoDAO> buscar = ingresoRepository.findById(id);
 
             if (buscar.isEmpty()) {
-                return GenericResponseDTO.builder().message("El id N°"+ id +" del ingreso que ha ingresado  no existe").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
-            } else{
-                return GenericResponseDTO.builder().message("Consulta ingreso por id: "+ id +" realizada con exito").objectResponse(buscar).statusCode(HttpStatus.OK.value()).build();
+                return GenericResponseDTO.builder().message("El id N°" + id + " del ingreso que ha ingresado  no existe").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
+            } else {
+                return GenericResponseDTO.builder().message("Consulta ingreso por id: " + id + " realizada con exito").objectResponse(buscar).statusCode(HttpStatus.OK.value()).build();
             }
 
-        }catch (Exception e) {
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return GenericResponseDTO.builder().message("Error consultando el egreso").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
+        }
+    }
+
+    @Override
+    public GenericResponseDTO sumaIngresosIdCuenta(BigDecimal id) throws Exception {
+        try {
+
+            BigDecimal sumaIngresosIdCuenta = ingresoRepository.sumaIngresosIdCuenta(id);
+
+
+            return GenericResponseDTO.builder().message("Consulta ingreso por id: " + id + " realizada con exito").objectResponse(sumaIngresosIdCuenta).statusCode(HttpStatus.OK.value()).build();
+
+        } catch (Exception e) {
             logger.error(e.getMessage());
             return GenericResponseDTO.builder().message("Error consultando el egreso").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
         }
@@ -91,17 +104,17 @@ public class IngresoService implements IIngresoService {
             Optional<IngresoDAO> buscar = ingresoRepository.findById(id);
 
             if (buscar.isEmpty()) {
-                return GenericResponseDTO.builder().message("El id N°"+ id +" del ingreso que ha ingresado no existe").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
-            } else{
+                return GenericResponseDTO.builder().message("El id N°" + id + " del ingreso que ha ingresado no existe").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
+            } else {
                 ingresoRepository.deleteById(id);
                 return GenericResponseDTO.builder().message("Eliminaado exitoso").objectResponse(id).statusCode(HttpStatus.OK.value()).build();
             }
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             logger.error(e.getMessage());
             return GenericResponseDTO.builder().message("Error al consultar persona").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
         }
 
     }
-    }
+}
 

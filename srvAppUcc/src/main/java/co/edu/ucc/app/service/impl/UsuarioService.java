@@ -8,6 +8,7 @@ import co.edu.ucc.app.modeloCanonico.dto.UsuarioDTO;
 import co.edu.ucc.app.modeloCanonico.entities.UsuarioDAO;
 import co.edu.ucc.app.repository.IUsuarioRepository;
 
+import co.edu.ucc.app.service.ICuentaService;
 import co.edu.ucc.app.service.IUsuarioService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.modelmapper.ModelMapper;
@@ -18,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.sql.Array;
 import java.util.*;
 
 
@@ -28,17 +28,17 @@ public class UsuarioService implements IUsuarioService {
     private static final Logger logger = LoggerFactory.getLogger(UsuarioService.class);
 
     private final IUsuarioRepository iUsuarioRepository;
-
+    private final ICuentaService cuentaService;
     private final PersonaService personaService;
-
     private final ModelMapper modelMapper;
     private final ConverterApp converterApp;
 
 
     @Autowired
-    public UsuarioService(IUsuarioRepository iUsuarioRepository, PersonaService personaService, ModelMapper modelMapper, ConverterApp converterApp) {
+    public UsuarioService(IUsuarioRepository iUsuarioRepository, ICuentaService cuentaService, PersonaService personaService, ModelMapper modelMapper, ConverterApp converterApp) {
 
         this.iUsuarioRepository = iUsuarioRepository;
+        this.cuentaService = cuentaService;
         this.personaService = personaService;
         this.modelMapper = modelMapper;
         this.converterApp = converterApp;
@@ -76,6 +76,7 @@ public class UsuarioService implements IUsuarioService {
             UsuarioDAO usuarioDAO = iUsuarioRepository.login(usuarioDTO.getCorreo(), DigestUtils.md5Hex(usuarioDTO.getClave()));
 
             UsuarioDTO response = converterApp.usuarioDAOtoDTO(usuarioDAO, modelMapper);
+            response.setCuenta(cuentaService.consultarIdCuentaPorIdPersona(response.getIdPersona().getId()));
 
             return GenericResponseDTO.builder().message("Login con exito").objectResponse(response).statusCode(HttpStatus.OK.value()).build();
 

@@ -118,4 +118,11 @@ public class AhorroControllerImpl implements IAhorroController {
                     "Ocurrio un error inesperado");
         }
     }
+
+    public static void main(String[] args) {
+        System.out.println(new BigDecimal("4545").setScale(2, BigDecimal.ROUND_HALF_DOWN));
+        System.out.println(new BigDecimal("0"));
+
+
+    }
 }

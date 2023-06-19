@@ -15,6 +15,12 @@ public interface IEgresoController {
 
     ResponseEntity<GenericResponseDTO> consultarId(BigDecimal id, HttpServletRequest request) throws Exception;
 
+    ResponseEntity<GenericResponseDTO> sumaEgresosIdCuenta(BigDecimal id, HttpServletRequest request) throws Exception;
+
+    ResponseEntity<GenericResponseDTO> consultarPorIdCuenta(BigDecimal id, HttpServletRequest request) throws Exception;
+
+    ResponseEntity<GenericResponseDTO> consultarEgresosPorIdCuentaIdEgreso(BigDecimal idCuenta,BigDecimal idGasto, HttpServletRequest request) throws Exception;
+
     ResponseEntity<GenericResponseDTO> eliminarPorId(BigDecimal id, HttpServletRequest request) throws Exception;
 
 }
