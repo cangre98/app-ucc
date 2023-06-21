@@ -7,6 +7,8 @@ import co.edu.ucc.app.modeloCanonico.entities.CuentaDAO;
 import co.edu.ucc.app.modeloCanonico.entities.IngresoDAO;
 import co.edu.ucc.app.repository.IIngresoRepository;
 import co.edu.ucc.app.service.IIngresoService;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -42,7 +49,10 @@ public class IngresoService implements IIngresoService {
     @Override
     public GenericResponseDTO crear(IngresoDTO ingresoDTO) throws Exception {
         try {
-
+            LocalDate localDate = LocalDate.now();
+            ingresoDTO.setFechaIngreso(Date.from(localDate.atStartOfDay()
+                    .atZone(ZoneId.systemDefault())
+                    .toInstant()));;
             IngresoDAO ingresoDAO = converterApp.ingresoDTOtoDAO(ingresoDTO, modelMapper);
 
             cuentaService.actualizarSaldo(CuentaDAO.builder()
@@ -80,6 +90,39 @@ public class IngresoService implements IIngresoService {
             logger.error(e.getMessage());
             return GenericResponseDTO.builder().message("Error consultando el egreso").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
         }
+    }
+
+    @Override
+    public GenericResponseDTO consultarHistoricoFecha(String json) throws Exception {
+        try {
+            JSONParser parser = new JSONParser();
+            JSONObject objRequest = (JSONObject) parser.parse(json);
+            String anio = (String) objRequest.get("anio") != null ? (String) objRequest.get("anio"):"0" ;
+            String mes = ((String) objRequest.get("mes") != null && (String) objRequest.get("mes")!="" ) ? (String) objRequest.get("mes"):"0" ;
+           Integer years = Integer.valueOf(anio) ;
+           Integer  moth = Integer.valueOf(mes) ;
+            List<IngresoDAO> consultarHistoricoPorAnio = new ArrayList<>();
+            if (years > 0 && moth == 0) {
+                consultarHistoricoPorAnio = ingresoRepository.consultarFechaPorAnnio(years);
+            } else if (moth > 0) {
+                consultarHistoricoPorAnio = ingresoRepository.consultarFechaPorAnnioYMes(years, moth);
+            }
+            if (consultarHistoricoPorAnio != null) {
+                return GenericResponseDTO.builder().message("Consulta ingreso por anio: " + anio+ " realizada con exito").objectResponse(consultarHistoricoPorAnio).statusCode(HttpStatus.OK.value()).build();
+            }else {
+                JSONObject respuesta = new JSONObject();
+                respuesta.put("mensaje", "no existen ingresos  asociados al año".concat(anio.toString()));
+
+                return GenericResponseDTO.builder().message("El anio" + anio + " del ingreso que ha ingresado  no existe").objectResponse(objRequest).statusCode(HttpStatus.BAD_REQUEST.value()).build();
+            }
+
+
+
+        }catch (Exception e) {
+            logger.error(e.getMessage());
+            return GenericResponseDTO.builder().message("Error consultando el ingreso").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
+        }
+
     }
 
     @Override

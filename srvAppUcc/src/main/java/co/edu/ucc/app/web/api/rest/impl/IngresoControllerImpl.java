@@ -10,6 +10,7 @@ import co.edu.ucc.app.web.api.rest.IIngresoController;
 import co.edu.ucc.app.web.api.rest.IInversionController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
@@ -67,6 +68,40 @@ public class IngresoControllerImpl implements IIngresoController {
         }
         }
 
+    @Override
+    @PostMapping(path = "/consultarHistorico", produces = "application/json", consumes = "application/json")
+    @ApiOperation(value = "consultarHistorico", notes = "notas")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Login Ok", response = GenericResponseDTO.class)
+    })
+    public ResponseEntity<GenericResponseDTO> porFecha(@ApiParam(value = "El json tiene que tener la siguiente estructura" +
+    "<br>"+
+    "{\n"+
+            "\"anio\":\"\", \n " +
+            "\"mes\":\"\", \n " +
+            "\"dia\":\"\" \n " +
+            "}" +
+            "<br>", required = true) String json, HttpServletRequest request) throws Exception {
+        try {
+
+            GenericResponseDTO salida = ingresoService.consultarHistoricoFecha(json);
+
+            MensajeGenerico.generarMensajeSalidaLog(logger, request, "login", mapper.writeValueAsString(salida));
+            return new ResponseEntity(
+                    salida, HttpStatus.valueOf(200)
+            );
+
+        } catch (ResponseStatusException | HttpClientErrorException e) {
+            logger.error(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "No se encuentra informacion");
+
+        } catch (Exception e) {
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Ocurrio un error inesperado");
+        }
+    }
 
 
     @Override

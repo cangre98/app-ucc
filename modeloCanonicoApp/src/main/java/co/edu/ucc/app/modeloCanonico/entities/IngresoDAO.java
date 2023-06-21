@@ -11,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -39,6 +40,10 @@ public class IngresoDAO {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idcuenta", nullable = false)
     private CuentaDAO idCuenta;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "fechaingreso", nullable = false, length = 7)
+    private Date fechaIngreso;
 
 
 

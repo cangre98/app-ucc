@@ -13,6 +13,9 @@ public interface IIngresoService {
     GenericResponseDTO crear(IngresoDTO ingresoDTO) throws Exception;
 
     GenericResponseDTO consultarPorId(BigDecimal entrada) throws Exception;
+
+    GenericResponseDTO consultarHistoricoFecha(String json) throws Exception;
+
     GenericResponseDTO sumaIngresosIdCuenta(BigDecimal entrada) throws Exception;
 
     GenericResponseDTO eliminarPorId(BigDecimal id) throws Exception;

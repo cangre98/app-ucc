@@ -14,6 +14,8 @@ public interface IIngresoController {
 
     ResponseEntity<GenericResponseDTO> crear(@Valid @RequestBody IngresoDTO ingresoDTO, HttpServletRequest request) throws Exception;
 
+    ResponseEntity<GenericResponseDTO> porFecha(@RequestBody String json, HttpServletRequest request) throws Exception;
+
     ResponseEntity<GenericResponseDTO> consultarId(BigDecimal id, HttpServletRequest request) throws Exception;
 
     ResponseEntity<GenericResponseDTO> eliminarPorId(BigDecimal id, HttpServletRequest request) throws Exception;
