@@ -16,6 +16,8 @@ public interface IIngresoController {
 
     ResponseEntity<GenericResponseDTO> consultarId(BigDecimal id, HttpServletRequest request) throws Exception;
 
+    ResponseEntity<GenericResponseDTO> consultarIngresoPorIdCuenta(BigDecimal id, HttpServletRequest request) throws Exception;
+
     ResponseEntity<GenericResponseDTO> eliminarPorId(BigDecimal id, HttpServletRequest request) throws Exception;
 
 }

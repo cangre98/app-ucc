@@ -15,6 +15,9 @@ public interface IIngresoService {
     GenericResponseDTO consultarPorId(BigDecimal entrada) throws Exception;
     GenericResponseDTO sumaIngresosIdCuenta(BigDecimal entrada) throws Exception;
 
+    GenericResponseDTO consultarIngresoPorIdCuenta(BigDecimal idCuenta) throws Exception;
+
+
     GenericResponseDTO eliminarPorId(BigDecimal id) throws Exception;
 
 

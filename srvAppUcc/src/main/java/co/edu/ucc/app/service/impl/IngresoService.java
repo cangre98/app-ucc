@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -94,6 +95,21 @@ public class IngresoService implements IIngresoService {
         } catch (Exception e) {
             logger.error(e.getMessage());
             return GenericResponseDTO.builder().message("Error consultando el egreso").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
+        }
+    }
+
+    @Override
+    public GenericResponseDTO consultarIngresoPorIdCuenta(BigDecimal id) throws Exception {
+        try {
+
+            List<IngresoDAO> ingresoDAOS = ingresoRepository.ingresosIdCuenta(id);
+
+
+            return GenericResponseDTO.builder().message("Consulta ingreso por id Cuenta: " + id + " realizada con exito").objectResponse(ingresoDAOS).statusCode(HttpStatus.OK.value()).build();
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return GenericResponseDTO.builder().message("Error consultando el ingresos ").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
         }
     }
 
