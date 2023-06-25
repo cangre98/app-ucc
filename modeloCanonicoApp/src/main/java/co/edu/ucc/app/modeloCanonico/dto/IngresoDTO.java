@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -31,5 +32,8 @@ public class IngresoDTO implements Serializable {
 
     @NotNull(message = MensajeValidacion.MSN_VARIABLE_REQUERIDA)
     private  CuentaDTO idCuenta;
+
+
+    private Date fechaIngreso;
 
 }
