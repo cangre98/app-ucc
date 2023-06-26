@@ -13,6 +13,7 @@ public interface IInversionService {
     GenericResponseDTO crear(InversionDTO ingresoDTO) throws Exception;
 
     GenericResponseDTO consultarPorId(BigDecimal entrada) throws Exception;
+    GenericResponseDTO consultarTodos() throws Exception;
 
     GenericResponseDTO eliminarPorId(BigDecimal id) throws Exception;
 

@@ -70,14 +70,41 @@ public class InversionControllerImpl implements IInversionController {
 
     @Override
     @GetMapping(path = "/consultarId/{id}", produces = "application/json")
-    @ApiOperation(value = "Consultar la descripcion proceso por id", notes = "notas")
+    @ApiOperation(value = "La consulta de inversion  fue exitosa", notes = "notas")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "La consulta de descripcion proceso fue exitosa", response = GenericResponseDTO.class)
+            @ApiResponse(code = 200, message = "La consulta de inversion  fue exitosa", response = GenericResponseDTO.class)
     })
     public ResponseEntity<GenericResponseDTO> consultarId(@PathVariable(value = "id", required = true) BigDecimal id,  HttpServletRequest request) throws Exception {
         try {
             MensajeGenerico.generarMensajeEntradaLog(logger, request, "consultarId", null);
-            GenericResponseDTO salida = inversionService.consultarPorId(id);
+            GenericResponseDTO salida = inversionService.eliminarPorId(id);
+            MensajeGenerico.generarMensajeSalidaLog(logger, request, "consultarId", mapper.writeValueAsString(salida));
+
+            return new ResponseEntity(
+                    salida, HttpStatus.valueOf(200)
+            );
+
+        } catch (ResponseStatusException | HttpClientErrorException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "No se encuentra informacion");
+        } catch (Exception e) {
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Ocurrio un error inesperado");
+        }
+    }
+
+
+    @Override
+    @GetMapping(path = "/consultarTodos", produces = "application/json")
+    @ApiOperation(value = "Consultar la descripcion proceso por id", notes = "notas")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "La consulta de descripcion proceso fue exitosa", response = GenericResponseDTO.class)
+    })
+    public ResponseEntity<GenericResponseDTO> consultarTodos( HttpServletRequest request) throws Exception {
+        try {
+            MensajeGenerico.generarMensajeEntradaLog(logger, request, "consultarId", null);
+            GenericResponseDTO salida = inversionService.consultarTodos();
             MensajeGenerico.generarMensajeSalidaLog(logger, request, "consultarId", mapper.writeValueAsString(salida));
 
             return new ResponseEntity(

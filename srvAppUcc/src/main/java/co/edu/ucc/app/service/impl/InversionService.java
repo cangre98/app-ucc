@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -54,7 +55,7 @@ public class InversionService implements IInversionService {
                     .objectResponse(inversionDTOSalida).statusCode(HttpStatus.OK.value()).build();
 
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             logger.error(e.getMessage());
             return GenericResponseDTO.builder().message("Error al registrar la inversion").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
         }
@@ -67,12 +68,29 @@ public class InversionService implements IInversionService {
             Optional<InversionDAO> buscar = iInversionService.findById(id);
 
             if (buscar.isEmpty()) {
-                return GenericResponseDTO.builder().message("El id N°"+ id +" de la inversion que ha ingresado  no existe").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
-            } else{
-                return GenericResponseDTO.builder().message("Consulta gasto por id: "+ id +" realizada con exito").objectResponse(buscar).statusCode(HttpStatus.OK.value()).build();
+                return GenericResponseDTO.builder().message("El id N°" + id + " de la inversion que ha ingresado  no existe").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
+            } else {
+                return GenericResponseDTO.builder().message("Consulta gasto por id: " + id + " realizada con exito").objectResponse(buscar).statusCode(HttpStatus.OK.value()).build();
             }
 
-        }catch (Exception e) {
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return GenericResponseDTO.builder().message("Error consultando el egreso").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
+        }
+    }
+
+
+    @Override
+    public GenericResponseDTO consultarTodos() throws Exception {
+        try {
+
+            List<InversionDAO> lista = iInversionService.findAll();
+
+
+            return GenericResponseDTO.builder().message("Consulta inversion realizada con exito").objectResponse(lista).statusCode(HttpStatus.OK.value()).build();
+
+
+        } catch (Exception e) {
             logger.error(e.getMessage());
             return GenericResponseDTO.builder().message("Error consultando el egreso").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
         }
@@ -85,17 +103,17 @@ public class InversionService implements IInversionService {
             Optional<InversionDAO> buscar = iInversionService.findById(id);
 
             if (buscar.isEmpty()) {
-                return GenericResponseDTO.builder().message("El id N°"+ id +" de la inversion que ha ingresado no existe").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
-            } else{
+                return GenericResponseDTO.builder().message("El id N°" + id + " de la inversion que ha ingresado no existe").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
+            } else {
                 iInversionService.deleteById(id);
                 return GenericResponseDTO.builder().message("Eliminaado exitoso").objectResponse(id).statusCode(HttpStatus.OK.value()).build();
             }
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             logger.error(e.getMessage());
             return GenericResponseDTO.builder().message("Error al consultar persona").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
         }
 
     }
-    }
+}
 

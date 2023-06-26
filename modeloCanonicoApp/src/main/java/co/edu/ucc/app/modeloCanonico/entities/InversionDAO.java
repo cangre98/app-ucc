@@ -32,6 +32,8 @@ public class InversionDAO {
     @Column(name = "nombre", nullable = false, length = 40)
     private String nombre;
 
+    private BigDecimal valor;
+
 
 
 

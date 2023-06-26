@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,6 +55,10 @@ public class EgresoService implements IEgresoService {
                     .saldo(egresoDTO.getValor())
                     .build(), false);
 
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(egresoDAO.getFecha()); // Configuramos la fecha que se recibe
+            calendar.add(Calendar.HOUR, 24);  // numero de horas a añadir, o restar en caso de horas<0
+            egresoDAO.setFecha (calendar.getTime());
 
             iEgresoRepository.save(egresoDAO);
 

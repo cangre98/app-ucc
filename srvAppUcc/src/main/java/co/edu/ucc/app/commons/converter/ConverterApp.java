@@ -74,7 +74,7 @@ public class ConverterApp {
 
         egresoDAO.setDetalle(egresoDTO.getDetalle());
         egresoDAO.setValor(egresoDTO.getValor());
-        egresoDAO.setFecha(new Date());
+        egresoDAO.setFecha(egresoDTO.getFecha());
         egresoDAO.setIdgasto(gastoDAO);
         egresoDAO.setIdCuenta(cuentaDAO);
         return egresoDAO;

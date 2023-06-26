@@ -19,10 +19,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class IngresoService implements IIngresoService {
@@ -49,16 +46,18 @@ public class IngresoService implements IIngresoService {
     @Override
     public GenericResponseDTO crear(IngresoDTO ingresoDTO) throws Exception {
         try {
-            LocalDate localDate = LocalDate.now();
-            ingresoDTO.setFechaIngreso(Date.from(localDate.atStartOfDay()
-                    .atZone(ZoneId.systemDefault())
-                    .toInstant()));;
+
             IngresoDAO ingresoDAO = converterApp.ingresoDTOtoDAO(ingresoDTO, modelMapper);
 
             cuentaService.actualizarSaldo(CuentaDAO.builder()
                     .id(ingresoDTO.getIdCuenta().getId())
                     .saldo(ingresoDTO.getValor())
                     .build(), true);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(ingresoDAO.getFechaIngreso()); // Configuramos la fecha que se recibe
+            calendar.add(Calendar.HOUR, 24);  // numero de horas a añadir, o restar en caso de horas<0
+            ingresoDAO.setFechaIngreso(calendar.getTime());
 
             ingresoRepository.save(ingresoDAO);
 

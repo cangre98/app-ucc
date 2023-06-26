@@ -16,6 +16,8 @@ public interface IInversionController {
 
     ResponseEntity<GenericResponseDTO> consultarId(BigDecimal id, HttpServletRequest request) throws Exception;
 
+    ResponseEntity<GenericResponseDTO> consultarTodos(HttpServletRequest request) throws Exception;
+
     ResponseEntity<GenericResponseDTO> eliminarPorId(BigDecimal id, HttpServletRequest request) throws Exception;
 
 }
