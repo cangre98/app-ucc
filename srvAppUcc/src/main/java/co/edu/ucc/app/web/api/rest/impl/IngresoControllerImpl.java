@@ -110,7 +110,8 @@ public class IngresoControllerImpl implements IIngresoController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "La consulta de descripcion proceso fue exitosa", response = GenericResponseDTO.class)
     })
-    public ResponseEntity<GenericResponseDTO> consultarId(@PathVariable(value = "id", required = true) BigDecimal id,  HttpServletRequest request) throws Exception {
+    public ResponseEntity<GenericResponseDTO> consultarId(@PathVariable(value = "id", required = true) BigDecimal id,
+                                                          HttpServletRequest request) throws Exception {
         try {
             MensajeGenerico.generarMensajeEntradaLog(logger, request, "consultarId", null);
             GenericResponseDTO salida = ingresoService.consultarPorId(id);
@@ -131,15 +132,17 @@ public class IngresoControllerImpl implements IIngresoController {
     }
 
     @Override
-    @GetMapping(path = "/consultarIdcuenta/{id}", produces = "application/json")
+    @GetMapping(path = "/consultarIdcuenta/{id}/{date}", produces = "application/json")
     @ApiOperation(value = "Consultar la descripcion proceso por id", notes = "notas")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "La consulta de ingreso fue exitosa", response = GenericResponseDTO.class)
     })
-    public ResponseEntity<GenericResponseDTO> consultarIngresoPorIdCuenta(@PathVariable(value = "id", required = true) BigDecimal id,  HttpServletRequest request) throws Exception {
+    public ResponseEntity<GenericResponseDTO> consultarIngresoPorIdCuenta(@PathVariable(value = "id", required = true) BigDecimal id,
+                                                                          @PathVariable(value = "date", required = false) String date,
+                                                                          HttpServletRequest request) throws Exception {
         try {
             MensajeGenerico.generarMensajeEntradaLog(logger, request, "consultarId", null);
-            GenericResponseDTO salida = ingresoService.consultarIngresoPorIdCuenta(id);
+            GenericResponseDTO salida = ingresoService.consultarIngresoPorIdCuenta(id,date);
             MensajeGenerico.generarMensajeSalidaLog(logger, request, "consultarId", mapper.writeValueAsString(salida));
 
             return new ResponseEntity(

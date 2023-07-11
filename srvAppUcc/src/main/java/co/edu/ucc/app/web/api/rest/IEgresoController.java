@@ -19,7 +19,7 @@ public interface IEgresoController {
 
     ResponseEntity<GenericResponseDTO> consultarPorIdCuenta(BigDecimal id, HttpServletRequest request) throws Exception;
 
-    ResponseEntity<GenericResponseDTO> consultarEgresosPorIdCuentaIdEgreso(BigDecimal idCuenta,BigDecimal idGasto, HttpServletRequest request) throws Exception;
+    ResponseEntity<GenericResponseDTO> consultarEgresosPorIdCuentaIdEgreso(BigDecimal idCuenta,BigDecimal idGasto,String date, HttpServletRequest request) throws Exception;
 
     ResponseEntity<GenericResponseDTO> eliminarPorId(BigDecimal id, HttpServletRequest request) throws Exception;
 

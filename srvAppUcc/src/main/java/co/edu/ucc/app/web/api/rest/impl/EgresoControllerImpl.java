@@ -95,16 +95,17 @@ public class EgresoControllerImpl implements IEgresoController {
 
 
     @Override
-    @GetMapping(path = "/consultaEgresosAll/{idCuenta}/{idGasto}", produces = "application/json")
+    @GetMapping(path = "/consultaEgresosAll/{idCuenta}/{idGasto}/{date}", produces = "application/json")
     @ApiOperation(value = "Consultar la descripcion proceso por id", notes = "notas")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "La consulta de descripcion proceso fue exitosa", response = GenericResponseDTO.class)
     })
     public ResponseEntity<GenericResponseDTO> consultarEgresosPorIdCuentaIdEgreso(@PathVariable(value = "idCuenta", required = true) BigDecimal idCuenta,
-                                                                                  @PathVariable(value = "idGasto", required = true) BigDecimal idGasto,  HttpServletRequest request) throws Exception {
+                                                                                  @PathVariable(value = "idGasto", required = true) BigDecimal idGasto,
+                                                                                  @PathVariable(value = "date", required = true) String date, HttpServletRequest request) throws Exception {
         try {
             MensajeGenerico.generarMensajeEntradaLog(logger, request, "consultarId", null);
-            GenericResponseDTO salida = egresoService.consultarEgresosPorIdCuentaIdEgreso(idCuenta,idGasto);
+            GenericResponseDTO salida = egresoService.consultarEgresosPorIdCuentaIdEgreso(idCuenta,idGasto, date);
             MensajeGenerico.generarMensajeSalidaLog(logger, request, "consultarId", mapper.writeValueAsString(salida));
 
             return new ResponseEntity(

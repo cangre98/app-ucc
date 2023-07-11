@@ -13,7 +13,7 @@ public interface IEgresoService {
 
     GenericResponseDTO sumaEgresosIdCuenta(BigDecimal id) throws Exception;
 
-    GenericResponseDTO consultarEgresosPorIdCuentaIdEgreso(BigDecimal idCuenta, BigDecimal idEgreso) throws Exception;
+    GenericResponseDTO consultarEgresosPorIdCuentaIdEgreso(BigDecimal idCuenta, BigDecimal idEgreso, String date) throws Exception;
 
     GenericResponseDTO consultarPorIdCuenta(BigDecimal id) throws Exception;
 

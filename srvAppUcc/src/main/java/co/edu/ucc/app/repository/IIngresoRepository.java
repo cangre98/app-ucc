@@ -15,7 +15,15 @@ public interface IIngresoRepository extends JpaRepository<IngresoDAO, BigDecimal
     @Query("SELECT sum(ig.valor) FROM IngresoDAO ig WHERE ig.idCuenta.id = :id")
     BigDecimal sumaIngresosIdCuenta(@Param("id") BigDecimal id);
 
-    @Query("SELECT ig FROM IngresoDAO ig WHERE ig.idCuenta.id = :id")
+    @Query("SELECT ig FROM IngresoDAO ig WHERE ig.idCuenta.id = :id " +
+            "                               AND MONTH(ig.fechaIngreso) =:mouth" +
+            "                               AND YEAR (ig.fechaIngreso) =:year  ")
+    List<IngresoDAO> ingresosIdCuenta(@Param("id") BigDecimal id,
+                                      @Param("mouth") Integer mouth,
+                                      @Param("year") Integer year);
+
+
+    @Query("SELECT ig FROM IngresoDAO ig WHERE ig.idCuenta.id = :id ")
     List<IngresoDAO> ingresosIdCuenta(@Param("id") BigDecimal id);
 
    @Query("select ig from IngresoDAO ig where YEAR(ig.fechaIngreso)=:anio")

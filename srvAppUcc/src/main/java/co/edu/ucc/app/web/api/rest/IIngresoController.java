@@ -16,9 +16,9 @@ public interface IIngresoController {
 
     ResponseEntity<GenericResponseDTO> porFecha(@RequestBody String json, HttpServletRequest request) throws Exception;
 
-    ResponseEntity<GenericResponseDTO> consultarId(BigDecimal id, HttpServletRequest request) throws Exception;
+    ResponseEntity<GenericResponseDTO> consultarId(BigDecimal id,HttpServletRequest request) throws Exception;
 
-    ResponseEntity<GenericResponseDTO> consultarIngresoPorIdCuenta(BigDecimal id, HttpServletRequest request) throws Exception;
+    ResponseEntity<GenericResponseDTO> consultarIngresoPorIdCuenta(BigDecimal id, String date , HttpServletRequest request) throws Exception;
 
     ResponseEntity<GenericResponseDTO> eliminarPorId(BigDecimal id, HttpServletRequest request) throws Exception;
 

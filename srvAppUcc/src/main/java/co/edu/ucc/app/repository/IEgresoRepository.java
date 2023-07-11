@@ -24,6 +24,13 @@ public interface IEgresoRepository extends JpaRepository<EgresoDAO, BigDecimal> 
     @Query("SELECT eg FROM EgresoDAO eg WHERE eg.idCuenta.id = :idCuenta AND eg.idgasto.id = :idGasto")
     List<EgresoDAO> consultarEgresosPorIdCuentaIdEgreso(@Param("idCuenta") BigDecimal idCuenta, @Param("idGasto") BigDecimal idGasto);
 
+    @Query("SELECT eg FROM EgresoDAO eg WHERE eg.idCuenta.id = :idCuenta AND eg.idgasto.id = :idGasto" +
+            "                           AND month(eg.fecha) = :mouth AND year(eg.fecha) = :year")
+    List<EgresoDAO> consultarEgresosPorIdCuentaIdEgreso(@Param("idCuenta") BigDecimal idCuenta,
+                                                        @Param("idGasto") BigDecimal idGasto,
+                                                        @Param("mouth") Integer mouth,
+                                                        @Param("year") Integer year);
+
     @Query("SELECT eg FROM EgresoDAO eg WHERE eg.idCuenta.id = :id")
     List<EgresoDAO> EgresosIdCuenta(@Param("id") BigDecimal id);
 

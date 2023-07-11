@@ -140,10 +140,18 @@ public class IngresoService implements IIngresoService {
     }
 
     @Override
-    public GenericResponseDTO consultarIngresoPorIdCuenta(BigDecimal id) throws Exception {
+    public GenericResponseDTO consultarIngresoPorIdCuenta(BigDecimal id, String date) throws Exception {
         try {
 
-            List<IngresoDAO> ingresoDAOS = ingresoRepository.ingresosIdCuenta(id);
+            List<IngresoDAO> ingresoDAOS = new ArrayList<>();
+            if(date.equals("0")){
+                ingresoDAOS = ingresoRepository.ingresosIdCuenta(id);
+            }else{
+                String [] dateSplit =  date.split("-");
+                ingresoDAOS = ingresoRepository.ingresosIdCuenta(id, Integer.valueOf(dateSplit[1]),Integer.valueOf(dateSplit[0]));
+            }
+
+
 
 
             return GenericResponseDTO.builder().message("Consulta ingreso por id Cuenta: " + id + " realizada con exito").objectResponse(ingresoDAOS).statusCode(HttpStatus.OK.value()).build();

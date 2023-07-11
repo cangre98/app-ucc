@@ -5,6 +5,7 @@ import co.edu.ucc.app.modeloCanonico.dto.EgresoDTO;
 import co.edu.ucc.app.modeloCanonico.dto.generic.GenericResponseDTO;
 import co.edu.ucc.app.modeloCanonico.entities.CuentaDAO;
 import co.edu.ucc.app.modeloCanonico.entities.EgresoDAO;
+import co.edu.ucc.app.modeloCanonico.entities.IngresoDAO;
 import co.edu.ucc.app.repository.IEgresoRepository;
 import co.edu.ucc.app.service.IEgresoService;
 import org.modelmapper.ModelMapper;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
@@ -111,12 +113,17 @@ public class EgresoService implements IEgresoService {
     }
 
     @Override
-    public GenericResponseDTO consultarEgresosPorIdCuentaIdEgreso(BigDecimal idCuenta, BigDecimal idEgreso) throws Exception {
+    public GenericResponseDTO consultarEgresosPorIdCuentaIdEgreso(BigDecimal idCuenta, BigDecimal idEgreso, String date) throws Exception {
 
         try {
 
-            List<EgresoDAO> sumEgresos = iEgresoRepository.consultarEgresosPorIdCuentaIdEgreso(idCuenta,idEgreso);
-
+            List<EgresoDAO> sumEgresos = new ArrayList<>();
+            if(date.equals("0")){
+                sumEgresos = iEgresoRepository.consultarEgresosPorIdCuentaIdEgreso(idCuenta,idEgreso);
+            }else{
+                String [] dateSplit =  date.split("-");
+                sumEgresos = iEgresoRepository.consultarEgresosPorIdCuentaIdEgreso(idCuenta, idEgreso, Integer.valueOf(dateSplit[1]),Integer.valueOf(dateSplit[0]));
+            }
 
             if (sumEgresos.isEmpty()) {
                 return GenericResponseDTO.builder().message("El id N°" + idCuenta + " del egreso que ha ingresado  no existe").objectResponse(null).statusCode(HttpStatus.BAD_REQUEST.value()).build();
