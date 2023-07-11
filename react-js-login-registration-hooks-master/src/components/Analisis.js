@@ -38,6 +38,12 @@ const Analisis = () => {
     setipoFiltro(tipoFiltro);
   };
 
+  const format = amount => {
+    return Number(amount)
+      .toFixed(2)
+      .replace(/\d(?=(\d{3})+\.)/g, '$&,');
+  };
+
 
   return (
     <>
@@ -46,9 +52,9 @@ const Analisis = () => {
           <div className="col">
             <header className="jumbotron">
               <h3><strong className="text-secondary">{cuenta.cuenta.idPersona.primerNombre} {cuenta.cuenta.idPersona.primerApellido}</strong></h3>
-              <h3><strong>Disponible: </strong> <span className="text-primary">{cuenta.cuenta.saldo}</span></h3>
-              <h3><strong>Ingresos Registrados:</strong> <span className="text-success">{cuenta.sumIngresos.objectResponse}</span>  </h3>
-              <h3><strong>Gastos Registrados:</strong> <span className="text-danger">{cuenta.sumEgresos.objectResponse}</span> </h3>
+              <h3><strong>Disponible: </strong> $<span className="text-primary">{format(cuenta.cuenta.saldo)}</span></h3>
+              <h3><strong>Ingresos Registrados:</strong> $<span className="text-success">{format(cuenta.sumIngresos.objectResponse)}</span>  </h3>
+              <h3><strong>Gastos Registrados:</strong> $<span className="text-danger">{format(cuenta.sumEgresos.objectResponse)}</span> </h3>
 
             </header>
           </div>

@@ -24,6 +24,8 @@ const ListarGastos = () => {
 
   const getAllGastosChange = (e) => {
     const tipoGastoLocal = e.target.value;
+    document.getElementById("bdaymonth").value = '';
+    setTipoGasto(tipoGastoLocal);
     UserService.getAllEgresos(currentUser.cuenta, tipoGastoLocal).then(
       (response) => {
         if(response.data.statusCode == 200){
@@ -32,8 +34,25 @@ const ListarGastos = () => {
           setArrayGastos([]);
         }        
       })
+  };
 
 
+  const getAllGastosChangeDate = (e) => {
+    const date = e.target.value;
+    UserService.getAllEgresosDate(currentUser.cuenta, tipoGasto,date ).then(
+      (response) => {
+        if(response.data.statusCode == 200){
+          setArrayGastos(response.data.objectResponse)
+        }else{
+          setArrayGastos([]);
+        }        
+      })
+  };
+
+  const format = amount => {
+    return Number(amount)
+      .toFixed(2)
+      .replace(/\d(?=(\d{3})+\.)/g, '$&,');
   };
 
   return (
@@ -41,17 +60,16 @@ const ListarGastos = () => {
       <div className="jumbotron" >
         <div className="container">
           <div className="row">
+          <h3>Filtrar Gastos</h3>
             <div className="col-3 mb-4" >
-              <h3>Filtrar Gastos</h3>
+              
               <Form>
                 <Select
                   className="form-control"
                   name="tipoDocumento"
-                  onChange={getAllGastosChange}
-                  value={tipoGasto}>
+                  onChange={getAllGastosChange}>
                   <option value="0"></option>
                   {
-
                     listaGastos.map(obj => (
                       <option key={obj.id} value={obj.id}>{obj.descripcion}</option>
                     ))
@@ -59,6 +77,10 @@ const ListarGastos = () => {
                 </Select>
               </Form>
             </div>
+            <div className="col-3 mb-4" >
+             <input className="form-control" type="month" id="bdaymonth" name="bdaymonth" onChange={getAllGastosChangeDate}/>
+            </div>
+            
           </div>
           <div className="row">
             <div className="col">
@@ -78,7 +100,7 @@ const ListarGastos = () => {
                         <td>{listValue.id}</td>
                         <td>{listValue.detalle}</td>
                         <td>{listValue.fecha}</td>
-                        <td>{listValue.valor}</td>
+                        <td>${format(listValue.valor)}</td>
                       </tr>
                     );
                   })}

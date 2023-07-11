@@ -23,7 +23,11 @@ const registerEgreso = (data) => {
 };
 
 const getAllEgresos = (cuenta,egreso) => {
-  return axios.get(API_URL_EGRESO + "consultaEgresosAll/"+cuenta+"/"+egreso);
+  return axios.get(API_URL_EGRESO + "consultaEgresosAll/"+cuenta+"/"+egreso+"/0");
+};
+
+const getAllEgresosDate = (cuenta,egreso, date) => {
+  return axios.get(API_URL_EGRESO + "consultaEgresosAll/"+cuenta+"/"+egreso+"/"+date);
 };
 
 const registerIngreso = (data) => {
@@ -31,7 +35,11 @@ const registerIngreso = (data) => {
 }; 
 
 const getIngresosPorCuenta = (cuenta) => {
-  return axios.get(API_URL_INGRESO + "consultarIdcuenta/"+cuenta);
+  return axios.get(API_URL_INGRESO + "consultarIdcuenta/"+cuenta+"/0");
+};
+
+const getIngresosPorCuentaFecha = (cuenta, fecha) => {
+  return axios.get(API_URL_INGRESO + "consultarIdcuenta/"+cuenta+"/"+fecha);
 };
 
 const getlistarMetas = () => {
@@ -61,6 +69,8 @@ const UserService = {
   registerIngreso,
   getAllEgresos,
   getIngresosPorCuenta,
+  getIngresosPorCuentaFecha,
+  getAllEgresosDate,
   getlistarMetas,
 }
 
